@@ -3,5 +3,5 @@ from . import views
 
 # this like app.use() in express
 urlpatterns = [
-    path('about/', views.About.as_view(), name="about"),
+    path('home/', views.Home.as_view(), name="home"),
 ]
