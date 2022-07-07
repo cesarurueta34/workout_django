@@ -1,6 +1,7 @@
-from djang.urls import path
+from django.urls import path
 from . import views
-url patterns = [
-    path('admin/', admin.site.urls), 
-    path('', include('main_app.urls'))
+
+# this like app.use() in express
+urlpatterns = [
+    path('about/', views.About.as_view(), name="about"),
 ]
