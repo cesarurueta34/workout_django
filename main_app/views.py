@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
@@ -11,3 +12,5 @@ class Home(View):
 
 class Home(TemplateView):
     template_name = "home.html"
+
+
