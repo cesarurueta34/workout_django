@@ -4,7 +4,7 @@ from django.views import View
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView
 from .models import Workout
-
+from django.views.generic.edit import CreateView
 # Create your views here.
 
 class Home(View): 
@@ -21,3 +21,9 @@ class WorkoutList(TemplateView):
         context = super().get_context_data(**kwargs)
         context["workouts"] = Workout.objects.all() # Here we are using the model to query the database for us.
         return context
+
+class WorkoutCreate(CreateView):
+    model = Workout
+    fields = ['workout_name', 'type']
+    template_name = "workout_create.html"
+    success_url = "/workout_list/"
