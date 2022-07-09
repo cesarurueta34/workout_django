@@ -1,10 +1,13 @@
+from django.urls import reverse
 from unicodedata import name
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView
 from .models import Workout
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+
 # Create your views here.
 
 class Home(View): 
@@ -26,4 +29,25 @@ class WorkoutCreate(CreateView):
     model = Workout
     fields = ['workout_name', 'type']
     template_name = "workout_create.html"
+    
+    
+    def get_success_url(self):
+        return reverse('workout_detail', kwargs={'pk': self.object.pk})
+
+class WorkoutUpdate(UpdateView):
+    model = Workout
+    fields = ['workout_name', 'type']
+    template_name = "workout_update.html"
+    success_url = "/workout_list/"
+
+    def get_success_url(self):
+        return reverse('workout_detail', kwargs={'pk': self.object.pk})
+
+class WorkoutDetail(DetailView):
+    model = Workout
+    template_name = "workout_detail.html"
+
+class WorkoutDelete(DeleteView):
+    model = Workout
+    template_name = "workout_delete_confirmation.html"
     success_url = "/workout_list/"

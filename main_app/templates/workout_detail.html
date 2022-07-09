@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+
+
+<h2>{{workout.workout_name}}</h2>
+<h2>{{workout.type}}</h2>
+<h2>{{workout.created_at}}</h2>
+
+<div class="detail__container">
+    <div class="buttons">
+        <div class="buttons">
+    <a href="{% url 'workout_update' workout.pk %}" class="button is-info"> Update
+        <span class="icon">
+            <i class="fas fa-edit"></i>
+        </span>
+    </a>
+    <a href="{% url 'workout_delete' workout.pk %}" class="button is-danger"> Delete
+        <span class="icon">
+            <i class="fas fa-trash-alt"></i>
+        </span>
+    </a>
+</div>
+{% endblock %}
