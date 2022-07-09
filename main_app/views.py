@@ -19,5 +19,5 @@ class WorkoutList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["Workouts"] = Workout.objects.all() # Here we are using the model to query the database for us.
+        context["workouts"] = Workout.objects.all() # Here we are using the model to query the database for us.
         return context
