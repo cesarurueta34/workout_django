@@ -15,13 +15,13 @@ class Workout(models.Model):
         ordering = ['created_at']
 
 
-class Excercise(models.Model):
+class Exercise(models.Model):
 
     name = models.CharField(max_length=150)
     reps = models.IntegerField(default=0)
     sets = models.IntegerField(default=0)
     weight = models.IntegerField(default=0)
-    Workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name="excercises")
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name="exercises")
 
     def __str__(self):
         return self.name

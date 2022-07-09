@@ -1,8 +1,6 @@
 {% extends 'base.html' %} 
 {% block content %}
 
-
-
 <h2>{{workout.workout_name}}</h2>
 <h2>{{workout.type}}</h2>
 <h2>{{workout.created_at}}</h2>
@@ -21,22 +19,73 @@
         </span>
     </a>
 </div>
+</br>
+<div><h1>Add an Excercise</h1></div>
 
-<div class="detail__excercises mb-5">
-    <h3 class="title is-3">Excercises</h3>
+    <form class="mb-5" action="{% url 'exercise_create' workout.pk %}" method="post">
+        {% csrf_token %}
+        <div class="field has-addons">
+            <div class="control">
+                <input
+                    class="input"
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input
+                    class="input"
+                    type="number"
+                    name="reps"
+                    placeholder="reps"
+                    min="1"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input
+                    class="input"
+                    type="number"
+                    name="sets"
+                    placeholder="sets"
+                    min="1"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input
+                    class="input"
+                    type="number"
+                    name="weight"
+                    placeholder="weight"
+                    min="1"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input class="button is-primary" type="submit" value="Add Excercise" />
+            </div>
+        </div>
+    </form>
+    
 
-    {% for excercise in workout.excercises.all %}
-    <div class="excercise">
-      <span>{{forloop.counter}}</span>
-      <span><b>{{excercise.name}}</b></span>
-      <span>{{excercise.reps}}</span>
-      <span>{{excercise.sets}}</span>
-      <span>{{excercise.weight}}</span>
+<div class="detail__exercises mb-5">
+    <h3 class="title is-3">Exercises</h3>
+
+    {% for exercise in workout.exercises.all %}
+    <div class="exercise">
+      <span><p>Excercise #: </p>{{forloop.counter}}</span>
+      <span><p>Name: </p><b>{{exercise.name}}</b></span>
+      <span><p>Reps: </p>{{exercise.reps}}</span>
+      <span><p>Sets: </p>{{exercise.sets}}</span>
+      <span><p>Weight: </p>{{exercise.weight}}</span>
     </div>
 		{% empty %}
     <article class="message">
       <div class="message-header">
-        <p>No Excercises Available</p>
+        <p>No Exercises Available</p>
       </div>
     </article>
 

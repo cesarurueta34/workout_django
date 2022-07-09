@@ -1,10 +1,11 @@
 from django.urls import reverse
 from unicodedata import name
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views import View
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView
-from .models import Workout
+from .models import Workout, Exercise
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 
@@ -51,3 +52,13 @@ class WorkoutDelete(DeleteView):
     model = Workout
     template_name = "workout_delete_confirmation.html"
     success_url = "/workout_list/"
+
+class ExerciseCreate(View):
+     def post(self, request, pk):
+         name = request.POST.get("name")
+         reps = request.POST.get("reps")
+         sets = request.POST.get("sets")
+         weight = request.POST.get("weight")
+         workout = Workout.objects.get(pk=pk)
+         Exercise.objects.create(name=name, reps=reps, sets=sets, weight=weight, workout=workout)
+         return redirect('workout_detail', pk=pk)
