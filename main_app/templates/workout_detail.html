@@ -1,6 +1,8 @@
 {% extends 'base.html' %} 
 {% block content %}
 
+
+
 <h2>{{workout.workout_name}}</h2>
 <h2>{{workout.type}}</h2>
 <h2>{{workout.created_at}}</h2>
@@ -19,8 +21,8 @@
         </span>
     </a>
 </div>
-</br>
-<div><h1>Add an Excercise</h1></div>
+
+<h3 class="title is-3">Add an Exercise</h3>
 
     <form class="mb-5" action="{% url 'exercise_create' workout.pk %}" method="post">
         {% csrf_token %}
