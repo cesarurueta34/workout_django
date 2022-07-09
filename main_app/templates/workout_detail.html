@@ -21,4 +21,27 @@
         </span>
     </a>
 </div>
+
+<div class="detail__excercises mb-5">
+    <h3 class="title is-3">Excercises</h3>
+
+    {% for excercise in workout.excercises.all %}
+    <div class="excercise">
+      <span>{{forloop.counter}}</span>
+      <span><b>{{excercise.name}}</b></span>
+      <span>{{excercise.reps}}</span>
+      <span>{{excercise.sets}}</span>
+      <span>{{excercise.weight}}</span>
+    </div>
+		{% empty %}
+    <article class="message">
+      <div class="message-header">
+        <p>No Excercises Available</p>
+      </div>
+    </article>
+
+    {% endfor %}
+  </div>
+
+
 {% endblock %}
