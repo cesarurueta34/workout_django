@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
@@ -22,6 +24,7 @@ class Home(TemplateView):
 class About(TemplateView):
     template_name = "about.html"
 
+@method_decorator(login_required, name='dispatch')
 class WorkoutList(TemplateView):
     template_name = "workout_list.html"
 
@@ -37,7 +40,7 @@ class WorkoutList(TemplateView):
             context["header"] = "My Workouts"
         return context
 
-
+@method_decorator(login_required, name='dispatch')
 class WorkoutCreate(CreateView):
     model = Workout
     fields = ['workout_name', 'type']
@@ -50,7 +53,8 @@ class WorkoutCreate(CreateView):
     def get_success_url(self):
         print(self.kwargs)
         return reverse('workout_detail', kwargs={'pk': self.object.pk})
-    
+
+@method_decorator(login_required, name='dispatch')    
 class WorkoutUpdate(UpdateView):
     model = Workout
     fields = ['workout_name', 'type']
@@ -60,15 +64,18 @@ class WorkoutUpdate(UpdateView):
     def get_success_url(self):
         return reverse('workout_detail', kwargs={'pk': self.object.pk})
 
+@method_decorator(login_required, name='dispatch')
 class WorkoutDetail(DetailView):
     model = Workout
     template_name = "workout_detail.html"
 
+@method_decorator(login_required, name='dispatch')
 class WorkoutDelete(DeleteView):
     model = Workout
     template_name = "workout_delete_confirmation.html"
     success_url = "/workout_list/"
 
+@method_decorator(login_required, name='dispatch')
 class ExerciseCreate(View):
      def post(self, request, pk):
          name = request.POST.get("name")
@@ -89,7 +96,7 @@ class Signup(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("artist_list")
+            return redirect("home")
         else:
             context = {"form": form}
             return render(request, "registration/signup.html", context)
