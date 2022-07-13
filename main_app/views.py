@@ -1,3 +1,5 @@
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from unicodedata import name
 from django.shortcuts import render
@@ -25,18 +27,30 @@ class WorkoutList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["workouts"] = Workout.objects.all() # Here we are using the model to query the database for us.
+        name=self.request.GET.get("name")
+        if name != None:
+            context["workouts"] = Workout.objects.filter(
+                name__icontains=name, user=self.request.user)
+            context["header"] = f"Searching for {name}"
+        else:
+            context["workouts"] = Workout.objects.filter(user=self.request.user)
+            context["header"] = "My Workouts"
         return context
+
 
 class WorkoutCreate(CreateView):
     model = Workout
     fields = ['workout_name', 'type']
     template_name = "workout_create.html"
     
-    
-    def get_success_url(self):
-        return reverse('workout_detail', kwargs={'pk': self.object.pk})
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(WorkoutCreate, self).form_valid(form)
 
+    def get_success_url(self):
+        print(self.kwargs)
+        return reverse('workout_detail', kwargs={'pk': self.object.pk})
+    
 class WorkoutUpdate(UpdateView):
     model = Workout
     fields = ['workout_name', 'type']
@@ -64,3 +78,19 @@ class ExerciseCreate(View):
          workout = Workout.objects.get(pk=pk)
          Exercise.objects.create(name=name, reps=reps, sets=sets, weight=weight, workout=workout)
          return redirect('workout_detail', pk=pk)
+
+class Signup(View):
+    def get(self, request):
+        form = UserCreationForm()
+        context = {"form": form}
+        return render(request, "registration/signup.html", context)
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("artist_list")
+        else:
+            context = {"form": form}
+            return render(request, "registration/signup.html", context)
+
