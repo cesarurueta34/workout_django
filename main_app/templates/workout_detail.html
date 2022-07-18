@@ -69,6 +69,7 @@
             <div class="control">
                 <input class="button is-primary" type="submit" value="Add Excercise" />
             </div>
+
         </div>
     </form>
     
@@ -83,6 +84,16 @@
       <span><p>Reps: </p>{{exercise.reps}}</span>
       <span><p>Sets: </p>{{exercise.sets}}</span>
       <span><p>Weight: </p>{{exercise.weight}}</span>
+      <a href="{% url 'exercise_update' exercise.pk %}" class="button is-info"> Update
+        <span class="icon">
+            <i class="fas fa-edit"></i>
+        </span>
+    </a>
+    <a href="{% url 'exercise_delete' exercise.pk %}" class="button is-danger"> Delete
+        <span class="icon">
+            <i class="fas fa-trash-alt"></i>
+        </span>
+    </a>
     </div>
 		{% empty %}
     <article class="message">

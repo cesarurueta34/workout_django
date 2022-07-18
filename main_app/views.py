@@ -101,3 +101,14 @@ class Signup(View):
             context = {"form": form}
             return render(request, "registration/signup.html", context)
 
+class ExerciseUpdate(UpdateView):
+    model = Exercise
+    fields = ['name', 'reps', 'sets', 'weight']
+    template_name = "exercise_update.html"
+    success_url = "/workout_list/"
+    
+class ExerciseDelete(DeleteView):
+    model = Exercise
+    template_name = "exercise_delete_confirmation.html"
+    success_url = "/workout_list/"
+
