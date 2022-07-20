@@ -22,7 +22,9 @@
     </a>
 </div>
 
+<div class="detail__exercises mb-5">
 <h3 class="title is-3">Add an Exercise</h3>
+</div>
 
     <form class="mb-5" action="{% url 'exercise_create' workout.pk %}" method="post">
         {% csrf_token %}
