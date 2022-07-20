@@ -15,14 +15,26 @@ from django.views.generic.detail import DetailView
 
 # Create your views here.
 
-class Home(View): 
-    def get(self, request): 
-        return HttpResponse("Workout Main Page")
 
 class Home(TemplateView):
     template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name=self.request.GET.get("name")
+        if name != None:
+            context["workouts"] = Workout.objects.filter(
+                name__icontains=name, user=self.request.user)
+            context["header"] = f"Searching for {name}"
+        else:
+            context["workouts"] = Workout.objects.filter(user=self.request.user).all().first()
+            context["header"] = "My Workouts"
+        return context
+
+
 class About(TemplateView):
     template_name = "about.html"
+
 
 @method_decorator(login_required, name='dispatch')
 class WorkoutList(TemplateView):
@@ -40,10 +52,12 @@ class WorkoutList(TemplateView):
             context["header"] = "My Workouts"
         return context
 
+
+
 @method_decorator(login_required, name='dispatch')
 class WorkoutCreate(CreateView):
     model = Workout
-    fields = ['workout_name', 'type']
+    fields = ['type']
     template_name = "workout_create.html"
     
     def form_valid(self, form):
@@ -57,7 +71,7 @@ class WorkoutCreate(CreateView):
 @method_decorator(login_required, name='dispatch')    
 class WorkoutUpdate(UpdateView):
     model = Workout
-    fields = ['workout_name', 'type']
+    fields = ['type']
     template_name = "workout_update.html"
     success_url = "/workouts/"
 
@@ -107,6 +121,9 @@ class ExerciseUpdate(UpdateView):
     fields = ['name', 'reps', 'sets', 'weight']
     template_name = "exercise_update.html"
     success_url = "/workout_list/"
+
+    def get_success_url(self):
+        return reverse('workout_detail', kwargs={'pk': self.object.workout.pk})
  
 
 @method_decorator(login_required, name='dispatch')

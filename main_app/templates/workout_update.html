@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<h1 class="pt-3">Update {{workout.workout_name}}</h1>
+<h1 class="pt-3">Update {{workout.type}} workout that was completed on {{workout.created_at}}</h1>
 
 <form action="" method="post">
   {% csrf_token %} {{form.as_p}} <input type="submit" value="Submit" />

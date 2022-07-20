@@ -1,15 +1,14 @@
 {% extends 'base.html' %} {% block content %}
 <h1 class="title">Log</h1>
+
 {% for workout in workouts %}
 <div class="gallery">
-  <a href="{% url 'workout_detail' pk=workout.pk %}"> {{ workout.workout_name }} </a>    
+  <a href="{% url 'workout_detail' pk=workout.pk %}"> {{ workout.type }} </a>    
   <div>
-        <p class="card-header-title">{{workout.type}}</p>
         <p class="card-header-title">{{workout.created_at}}</p>
       </div>
 </div>
 
-  {% endfor %}
-</div>
+{% endfor %}
 
 {% endblock %}

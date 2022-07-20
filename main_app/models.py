@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 class Workout(models.Model):
 
-    workout_name = models.CharField(max_length=100)
     type = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)    
@@ -14,7 +13,7 @@ class Workout(models.Model):
         return self.workout_name
 
     class Meta:
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
 
 class Exercise(models.Model):
