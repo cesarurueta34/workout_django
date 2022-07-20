@@ -16,6 +16,7 @@ from django.views.generic.detail import DetailView
 # Create your views here.
 
 
+@method_decorator(login_required, name='dispatch')
 class Home(TemplateView):
     template_name = "home.html"
 
