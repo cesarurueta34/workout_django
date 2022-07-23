@@ -1,6 +1,8 @@
 {% extends 'base.html' %} {% block content %}
 {% if user.is_authenticated %}
 <a class="button is-dark" href="{% url 'workout_create' %}">Log Workout</a>
+
+<h2 class="title is-6"> You have completed {{number|length}} workouts so far!</h2>
 {% else %}
 <h1>Please Sign up or Login</h1>
 {% endif %}

@@ -20,15 +20,16 @@ from django.views.generic.detail import DetailView
 class Home(TemplateView):
     template_name = "home.html"
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         name=self.request.GET.get("name")
         if name != None:
-            context["workouts"] = Workout.objects.filter(
+            context["number"] = Workout.objects.filter(
                 name__icontains=name, user=self.request.user)
             context["header"] = f"Searching for {name}"
         else:
-            context["workouts"] = Workout.objects.filter(user=self.request.user).all().first()
+            context["number"] = Workout.objects.filter(user=self.request.user)
             context["header"] = "My Workouts"
         return context
 
@@ -68,6 +69,19 @@ class WorkoutCreate(CreateView):
     def get_success_url(self):
         print(self.kwargs)
         return reverse('workout_detail', kwargs={'pk': self.object.pk})
+    
+
+    def get_context_data(self, **kwargs):
+        context_1 = super().get_context_data(**kwargs)
+        name=self.request.GET.get("name")
+        if name != None:
+            context_1["workout"] = Workout.objects.filter(
+                name__icontains=name, user=self.request.user)
+            context_1["header"] = f"Searching for {name}"
+        else:
+            context_1["workout"] = Workout.objects.filter(user=self.request.user).all().first()
+            context_1["header"] = "My Workouts"
+        return context_1
 
 @method_decorator(login_required, name='dispatch')    
 class WorkoutUpdate(UpdateView):
